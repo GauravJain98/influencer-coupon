@@ -12,6 +12,14 @@ type Config struct {
 	SecretKey       string
 	SqlUrl          string
 	DriverName      string
+	YoutubeApiKey   string
+}
+
+type envVar struct {
+	Name     string
+	Target   *string
+	Required bool
+	Default  string
 }
 
 func (config *Config) Load() {
@@ -19,20 +27,25 @@ func (config *Config) Load() {
 		log.Println("Warning: unable to find a .env file")
 	}
 
-	config.SecretKey = os.Getenv("SECRET_KEY")
-
-	if config.SecretKey == "" {
-		log.Fatal("SECRET_KEY not set!")
+	vars := []envVar{
+		{Name: "SECRET_KEY", Target: &config.SecretKey, Required: true},
+		{Name: "SQL_URL", Target: &config.SqlUrl, Required: true},
+		{Name: "DRIVER_NAME", Target: &config.DriverName, Default: "sqlite3"},
+		{Name: "YOUTUBE_API_KEY", Target: &config.YoutubeApiKey, Required: true},
 	}
 
-	config.SqlUrl = os.Getenv("SQL_URL")
-	if config.SqlUrl == "" {
-		log.Fatal("SQL_URL not set!")
-	}
+	for _, env := range vars {
+		value := os.Getenv(env.Name)
 
-	config.DriverName = os.Getenv("DRIVER_NAME")
-	if config.SqlUrl == "" {
-		config.DriverName = "sqlite3"
+		if value == "" {
+			value = env.Default
+		}
+
+		if value == "" && env.Required {
+			log.Fatalf("%s not set!", env.Name)
+		}
+
+		*env.Target = value
 	}
 
 }
