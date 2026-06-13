@@ -14,11 +14,6 @@ type Config struct {
 	DriverName      string
 }
 
-// type App struct {
-// 	Config Config
-// 	Db     *sql.DB
-// }
-
 func (config *Config) Load() {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Println("Warning: unable to find a .env file")
