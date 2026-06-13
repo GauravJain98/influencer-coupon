@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"gauravjain98/influencer-coupon/models"
+	"gauravjain98/influencer-coupon/routes"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -16,6 +17,10 @@ import (
 func SetupRouter(db *gorm.DB) *gin.Engine {
 	router := gin.Default()
 	//TODO: Handle allowed origins, cors, headers etc
+
+	routes.SetupAdminRoutes(router, db)
+	routes.SetupUserRoutes(router, db)
+	routes.SetupPublicRoutes(router, db)
 
 	router.GET("/hello", func(c *gin.Context) {
 		c.String(200, "Hello, Streamer")
