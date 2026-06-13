@@ -2,8 +2,10 @@ package main
 
 import (
 	"flag"
-	"gauravjain98/influencer-coupon/app"
 	"log"
+
+	"github.com/GauravJain98/influencer-coupon/server/app"
+	"github.com/GauravJain98/influencer-coupon/server/config"
 )
 
 func main() {
@@ -15,13 +17,13 @@ func main() {
 		log.Fatal("use only one of -server or -worker")
 	}
 
-	config := app.Config{}
-	config.Load()
+	cfg := config.Config{}
+	cfg.Load()
 
 	if *worker {
-		app.RunWorker(config)
+		app.RunWorker(cfg)
 		return
 	}
 
-	app.RunServer(config)
+	app.RunServer(cfg)
 }

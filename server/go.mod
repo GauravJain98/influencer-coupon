@@ -1,4 +1,4 @@
-module gauravjain98/influencer-coupon
+module github.com/GauravJain98/influencer-coupon/server
 
 go 1.25.0
 

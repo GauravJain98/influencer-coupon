@@ -3,9 +3,11 @@ package app
 import (
 	"fmt"
 	"log"
+	"time"
 
-	"gauravjain98/influencer-coupon/models"
-	"gauravjain98/influencer-coupon/routes"
+	"github.com/GauravJain98/influencer-coupon/server/config"
+	"github.com/GauravJain98/influencer-coupon/server/models"
+	"github.com/GauravJain98/influencer-coupon/server/routes"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -39,7 +41,7 @@ func Migrate(db *gorm.DB) error {
 	)
 }
 
-func DbConnect(config Config) *gorm.DB {
+func DbConnect(config config.Config) *gorm.DB {
 	var db *gorm.DB
 	var err error
 	if config.DriverName == "sqlite3" {
@@ -68,7 +70,7 @@ func DbConnect(config Config) *gorm.DB {
 	return db
 }
 
-func RunServer(config Config) {
+func RunServer(config config.Config) {
 
 	db := DbConnect(config)
 
@@ -87,8 +89,13 @@ func RunServer(config Config) {
 
 }
 
-func RunWorker(config Config) {
+func RunWorker(config config.Config) {
 	db := DbConnect(config)
+
+	for true {
+
+		time.Sleep(5 * time.Second)
+	}
 
 	sqlDB, err := db.DB()
 
