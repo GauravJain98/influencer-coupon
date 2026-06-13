@@ -34,7 +34,7 @@ func Migrate(db *gorm.DB) error {
 	)
 }
 
-func Run(config Config) {
+func DbConnect(config Config) *gorm.DB {
 	var db *gorm.DB
 	var err error
 	if config.DriverName == "sqlite3" {
@@ -48,19 +48,50 @@ func Run(config Config) {
 	}
 
 	sqlDB, err := db.DB()
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer sqlDB.Close()
+
+	if err = sqlDB.Ping(); err != nil {
+		log.Fatal("Can not ping db", err)
+	}
 
 	if err := Migrate(db); err != nil {
 		log.Fatal(err)
 	}
+	return db
+}
 
-	
+func RunServer(config Config) {
+
+	db := DbConnect(config)
+
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer sqlDB.Close()
+
 	router := SetupRouter(db)
 	if err := router.Run(":8080"); err != nil {
 		fmt.Println("Failed to start server", err)
 	}
 
+}
+
+func RunWorker(config Config) {
+	db := DbConnect(config)
+
+	sqlDB, err := db.DB()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer sqlDB.Close()
+
+	log.Fatal("THIS HAS NOT BEEN IMPLEMENTED YET")
 }
