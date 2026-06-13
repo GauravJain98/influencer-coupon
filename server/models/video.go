@@ -3,7 +3,7 @@ package models
 import "gorm.io/gorm"
 
 type Video struct {
-	Link            string  `gorm:"type:text;primaryKey"`
+	Link            string  `gorm:"type:text;"`
 	ChannelID       string  `gorm:"type:text;not null;index"`
 	Title           *string `gorm:"type:text;column:title"`
 	Description     *string `gorm:"type:text;column:description"`
