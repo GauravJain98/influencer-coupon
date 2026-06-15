@@ -35,6 +35,7 @@ func main() {
 		&models.Video{},
 		&models.ChannelAffiliate{},
 		&models.ChannelAffiliateVideo{},
+		&models.ScrapingError{},
 	)
 	// log.Printf("seeded %d channels", len(channels))
 }

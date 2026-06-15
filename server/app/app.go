@@ -8,6 +8,7 @@ import (
 	"github.com/GauravJain98/influencer-coupon/server/config"
 	"github.com/GauravJain98/influencer-coupon/server/models"
 	"github.com/GauravJain98/influencer-coupon/server/routes"
+	"github.com/GauravJain98/influencer-coupon/server/workers"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -38,6 +39,7 @@ func Migrate(db *gorm.DB) error {
 		&models.Video{},
 		&models.ChannelAffiliate{},
 		&models.ChannelAffiliateVideo{},
+		&models.ScrapingError{},
 	)
 }
 
@@ -91,12 +93,6 @@ func RunServer(config config.Config) {
 
 func RunWorker(config config.Config) {
 	db := DbConnect(config)
-
-	for true {
-
-		time.Sleep(5 * time.Second)
-	}
-
 	sqlDB, err := db.DB()
 
 	if err != nil {
@@ -105,5 +101,8 @@ func RunWorker(config config.Config) {
 
 	defer sqlDB.Close()
 
-	log.Fatal("THIS HAS NOT BEEN IMPLEMENTED YET")
+	for {
+		workers.NewChannelBackfillWorker(config, db)
+		time.Sleep(5 * time.Second)
+	}
 }

@@ -29,7 +29,7 @@ func main() {
 	channels := []models.Channel{
 		// Add channels here, for example:
 		{
-			Handle: stringPtr("@Moobub"),
+			Handle: stringPtr("@algorithm1313"),
 		},
 		{
 			Handle: stringPtr("@WillTennyson"),
