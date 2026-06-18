@@ -28,12 +28,15 @@ func main() {
 
 	channels := []models.Channel{
 		// Add channels here, for example:
+		// {
+		// 	Handle: stringPtr("@algorithm1313"),
+		// },
 		{
-			Handle: stringPtr("@algorithm1313"),
+			Handle: stringPtr("@Moobub"),
 		},
-		{
-			Handle: stringPtr("@WillTennyson"),
-		},
+		// {
+		// 	Handle: stringPtr("@WillTennyson"),
+		// },
 	}
 
 	for i := range channels {
